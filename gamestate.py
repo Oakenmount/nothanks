@@ -25,6 +25,7 @@ class GameState:
         player.skip()
         self.end_turn()
 
+
 class Player:
     def __init__(self, id: int):
         self.id = id
@@ -40,3 +41,6 @@ class Player:
 
     def skip(self):
         self.chips -= 1
+
+    def score(self):
+        return sum(self.cards) - self.chips

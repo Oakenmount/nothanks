@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.typing as npt
 
 
 class Player:
@@ -6,6 +7,10 @@ class Player:
         self.id = id
         self.chips = 11
         self.cards = []
+
+    def as_vector(self) -> npt.NDArray[np.uint8]:
+        return np.array([self.score(), self.chips] + [1 if card in self.cards else 0 for card in range(3, 35 + 1)],
+                        dtype=np.uint8)
 
     def take(self, card: int, chips: int):
         self.chips += chips
@@ -31,6 +36,10 @@ class GameState:
         self.current_turn = 0
         self.current_card = 0
         self.chips = 0
+
+    def as_vector(self) -> npt.NDArray[np.uint8]:
+        player_vec = np.array([player.as_vector() for player in self.players]).flatten()
+        return np.concatenate((np.array([self.get_card(), self.get_chips()], dtype=np.uint8), player_vec))
 
     def end_turn(self):
         self.current_turn = (self.current_turn + 1) % len(self.players)

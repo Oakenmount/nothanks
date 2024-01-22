@@ -66,6 +66,8 @@ class GameState:
         return self.players[self.current_turn]
 
     def get_card(self) -> int:
+        if self.is_over():
+            return -1
         # noinspection PyTypeChecker
         return self.deck[self.current_card]
 
